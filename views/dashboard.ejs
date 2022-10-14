@@ -1,0 +1,99 @@
+
+ 
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style=" background-color: #dbeef5"; >
+  <style>
+    body  {
+    background-image: url("paper.gif");
+    background-color: #dbeef5;
+  }
+  </style>
+    <a class="navbar-brand" style="color:rgb(21, 83, 83)" href="#">Dashboard</a>
+  
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" style="color:rgb(21, 83, 83)" href="#">Welcome <%=user.name %> <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+      <span class="navbar-text">
+        <a href="/users/logout" >Logout</a>
+      </span>
+    </div>
+  </nav>
+  <br/><br/>
+  <% include ./partials/messages %>
+  <br />
+  <%= typeof msg != 'undefined' ? msg : '' %>
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+      <div class="file-field input-field">
+        <div class="btn grey">
+          <span>click here  to Attach File</span>
+          <input name="myImage" type="file">
+        </div>
+        <input type="hidden" name=user value=<%=user.name %>>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+      <button type="submit" class="btn">Upload</button>
+    </form>
+    <br/><br/>
+    <br/><br/> 
+    <h4 style="font-size:30px"><u>Your File Details</u></h4>
+    <table>
+      <thead>
+        <tr>
+            <th>User Name</th>
+            <th>File Name</th>
+            <th>Upload Time</th>
+            <th>Download</th>
+            <th>File</th>
+        </tr>
+      </thead>
+      <% var cf = 'https://d3kk7nijhssz3x.cloudfront.net/'%>
+      <tbody>
+          <% data.forEach(function (data) { %>
+          <form action="/delete" method="POST">
+            <tr>
+                    <td><%= data.user %></td>
+                    <td><%= data.fileName %></td>
+                    <td><%= data.uploadTime %></td>
+                    <td><a href='<%=cf + data.fileName %>'><i class="medium fas fa-file-download"></i></a></td>
+                    <td><button type='submit' class='btn' name='<%= data.fileUrl %>'>Delete</button></td>
+                    <input type='hidden' id='email' name='email' value='<%= data.email %>'>
+                    <input type='hidden' id='fileUrl' name='fileUrl' value='<%= data.fileUrl %>'>
+              </tr>
+            </form>
+            <% }) %>
+      </tbody>
+    </table>
+
+    <br/><br/>
+    <br/><br/> 
+    <%if (logins.length > 0) { %>
+      <h4><u>User Details</u></h4>
+    <table>
+        <thead>
+          <tr>
+              <th>User Name</th>
+              <th>Email</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+            <% logins.forEach(function (logins) { %>
+              <tr>
+                  <td><%=logins.name %></td>
+                  <td><%=logins.email %></td>
+              </tr>
+          <% }) %>
+          
+        </tbody>
+      </table>
+
+      <br/><br/>
+    <br/><br/> 
+      <% } %>
